@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Vite App</title>
+</head>
+<body>
+
+
+
+<main>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit ut voluptate unde 
+neque sunt in consequatur sapiente, saepe praesentium maiores.
+
+<simple-greeting name="World"></simple-greeting>
+
+<script type="module">
+import {LitElement, css, html} from './bundle.js'
+class SimpleGreeting extends LitElement {
+  static styles = css`p { color: blue }`;
+
+  static properties = {
+    name: {type: String},
+  };
+
+  constructor() {
+    super();
+    this.name = 'Somebody';
+  }
+
+  render() {
+    return html`<p>Hello, ${this.name}!</p>`;
+  }
+}
+customElements.define('simple-greeting', SimpleGreeting);
+
+
+</script>
+
+
+
+
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

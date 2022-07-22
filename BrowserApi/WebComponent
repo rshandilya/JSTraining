@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<!--script type="module" src="/main.js"></script-->
+<main>
+<h1>Web Components</h1>
+<b>A good architect is the one who can make the complex simple.</b>
+<p>
+  Web Components is a suite of different technologies allowing you to create 
+  reusable custom elements — with their functionality encapsulated away from 
+  the rest of your code — and utilize them in your web apps.
+</p>
+
+<p>
+  It consists of three main technologies, which can be used together to create 
+  versatile custom elements with encapsulated functionality that can be reused 
+  wherever you like without fear of code collisions.
+
+  <ul>
+    <li><b>Custom elements:</b> A set of JavaScript APIs that allow you to define 
+      custom elements and their behavior, which can then be used as desired in 
+      your user interface.</li>
+    <li><b>Shadow DOM:</b> A set of JavaScript APIs for attaching an encapsulated 
+      "shadow" DOM tree to an element — which is rendered separately from the main 
+      document DOM — and controlling associated functionality.</li>
+    <li><b>HTML templates:</b> The &lttemplate&gt and &ltslot&gt elements enable you to 
+      write markup templates that are not displayed in the rendered page. </li>
+  </ul>
+</p>
+
+
+
+<h3>Custom elements</h3>
+We can create custom HTML elements, described by our class, with its own
+methods and properties, events and so on.
+<pre>
+class MyElement extends HTMLElement {
+  constructor() {
+    super();
+    // element created
+  }
+
+  connectedCallback() {
+    // browser calls it when the element is added to the document
+    // (can be called many times if an element is repeatedly added/removed)
+  }
+
+  disconnectedCallback() {
+    // browser calls it when the element is removed from the document
+    // (can be called many times if an element is repeatedly added/removed)
+  }
+
+  static get observedAttributes() {
+    return [/* array of attribute names to monitor for changes */];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    // called when one of attributes listed above is modified
+  }
+
+  adoptedCallback() {
+    // called when the element is moved to a new document
+    // (happens in document.adoptNode, very rarely used)
+  } 
+  // there can be other element methods and properties
+}
+</pre>
+
+After that, we need to register the element:
+<pre>
+// let the browser know that &ltmy-element&gt is served by our new class
+customElements.define("my-element", MyElement);
+</pre>
+
+<h3>HTML Template</h3>
+The HTML Template specification defines the &lttemplate&gt element, to create fragments
+  of markup to be unused in our custom element until we activate them later on runtime.
+
+
+<template id="my-error-message">
+  <p>
+  Some error messages.
+  </p>
+  <p>
+    <slot>This is a default message</slot>
+  </p>
+</template>
+
+<script>
+let myTemplate = document.getElementById('my-error-message');
+let myContent = myTemplate.content;
+document.body.appendChild(myContent);
+</script>
+
+<h4>Slots</h4>
+In addition to &lttemplate&gt, we can take advantage of &ltslot&gt inside our content. Slots
+allow you to define placeholders in your template,
+
+
+<h3>Shadow DOM</h3>
+The Shadow DOM specification defines a mechanism with which to encapsulate our
+web components. The markup and styles that we create inside our web components
+protect it from external DOM manipulation and lobal CSS rules.
+
+
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

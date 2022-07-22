@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<!--script type="module" src="/main.js"></script-->
+<main>
+<h1>Asynchronous Programming</h1>
+<h3>Introduction</h3>
+<p>Since JavaScript is a single-threaded programming language with a synchronous
+  execution model that processes one operation after another, it can only process one
+  statement at a time. </p>
+
+<p>If API calls were performed in a
+  synchronous manner, the browser would not be able to handle any user input, 
+  like   scrolling or clicking a button, until that operation completes. 
+  This is known as <i>blocking</i> .</p>
+
+<p>In order to prevent blocking behavior, the browser environment has many Web APIs that
+  JavaScript can access that are <i>asynchronous</i>, meaning they can run in parallel with other
+  operations instead of sequentially.</p>
+
+<h3>The Event Loop</h3>
+<p>JavaScript code that does not use any asynchronous Web APIs will execute in a
+  synchronous manner—one at a time, sequentially.</p>
+
+
+<pre>
+// Define three example functions
+function first() {
+  console.log(1)
+}
+
+function second() {
+  console.log(2)
+}
+
+function third() {
+  console.log(3)
+}
+
+// Execute the functions
+first()
+second()
+third()
+</pre>
+
+<p><b>setTimeout</b> takes two arguments: the function it will run asynchronously, and the
+  amount of time it will wait before calling that function. 
+  setTimeout needs to be asynchronous, otherwise the
+  entire browser would remain frozen during the waiting, which would result in a poor 
+  user experience.
+</p>
+
+<pre>
+// Define three example functions, but one of them contains asynchronous code
+function first() {
+  console.log(1)
+}
+
+function second() {
+  setTimeout(() => {
+    console.log(2)
+  }, 0)
+}
+
+function third() {
+  console.log(3)
+}
+
+// Execute the functions
+first()
+second()
+third()
+</pre>
+<p>Whether you set the timeout to zero seconds or five minutes will make no difference—the
+  console.log called by asynchronous code will execute after the synchronous top-level
+  functions. This happens because the JavaScript host environment, in this case the
+  browser, uses a concept called the <b>event loop</b> to handle concurrency, or parallel events.
+</p><p>
+  Since JavaScript can only execute one statement at a time, it needs the event loop to be
+  informed of when to execute which specific statement. The event loop handles this with
+  the concepts of a <i>stack</i> and a <i>queue</i>.</p>
+
+<h5>Stack</h5>
+For the example only containing synchronous code, the browser handles the execution in
+the following order:
+<ul>
+<li>Add first() to the stack, run first() which logs 1 to the console, remove
+  first() from the stack.</li>
+
+<li>Add second() to the stack, run second() which logs 2 to the console, remove
+  second() from the stack.</li>
+
+<li>Add third() to the stack, run third() which logs 3 to the console, remove
+  third() from the stack.</li>
+</ul>
+
+<p>The second example with setTimout looks like this:
+
+<ul>
+  <li>Add first() to the stack, run first() which logs 1 to the console, remove
+    first() from the stack.</li>
+  
+  <li>Add second() to the stack, run second() .
+    Add setTimeout() to the stack, run the setTimeout() Web API which
+    starts a timer and adds the anonymous function to the queue, remove
+    setTimeout() from the stack.</li>
+  
+  <li>Remove second() from the stack.</li>
+  <li>Add third() to the stack, run third() which logs 3 to the console, remove
+    third() from the stack.</li>
+  <li>The event loop checks the queue for any pending messages and finds the
+    anonymous function from setTimeout() , adds the function to the stack which
+    logs 2 to the console, then removes it from the stack.</li>
+  
+  </ul>
+
+</p>
+<h5>Queue</h5>
+<p>The queue, also referred to as <i>message queue</i> or <i>task queue</i>, is a waiting area for
+  functions. Whenever the call stack is empty, the event loop will check the queue for any
+  waiting messages, starting from the oldest message. Once it finds one, it will add it to the
+  stack, which will execute the function in the message.</p>
+
+<p>This queue system exists because if the timer were to add the anonymous
+  function directly to the stack when the timer finishes, it would interrupt whatever
+  function is currently running, which could have unintended and unpredictable effects.</p>
+
+<h3>Callback Functions</h3>
+If you wanted to ensure one of the functions, like
+the third function, ran after the timeout, then you would have to use asynchronous
+coding methods.
+
+<p>The original solution to dealing with this problem is using callback functions. 
+  they are just a function that has been passed as an
+argument to another function. The function that takes another function as an argument is
+called a higher-order function.
+</p>
+
+<pre>
+// A function
+function fn() {
+  console.log('Just a function')
+}
+
+// A function that takes another function as an argument
+function higherOrderFunction(callback) {
+  // When you call a function that is passed as an argument, it is referred to as a callback
+  callback()
+}
+
+// Passing a function
+higherOrderFunction(fn)
+</pre>
+
+<p>Let’s go back to the first , second , and third functions with setTimeout . 
+  The task is to get the third function to always delay execution until after the
+  asynchronous action in the second function has completed.
+</p>
+
+<pre>
+// Define three functions
+function first() {
+  console.log(1)
+}
+
+function second(callback) {
+  setTimeout(() => {
+    console.log(2)
+
+    // Execute the callback function
+    callback()
+  }, 0)
+}
+
+function third() {
+  console.log(3)
+}
+
+first()
+second(third)
+
+</pre>
+
+<h4>Nested Callbacks and the Pyramid of Doom</h4>
+However, due to the nested nature of callbacks, code can end up getting messy if 
+you have a lot of consecutive asynchronous requests that rely on each other. This was a big frustration for JavaScript developers early
+on, and as a result code containing nested callbacks is often called the “pyramid of doom”
+or “callback hell.”
+
+<pre>
+  function pyramidOfDoom() {
+    setTimeout(() => {
+      console.log(1)
+      setTimeout(() => {
+        console.log(2)
+        setTimeout(() => {
+          console.log(3)
+        }, 500)
+      }, 2000)
+    }, 1000)
+  }
+</pre>
+
+<h3>Promises</h3>
+A promise represents the completion of an asynchronous function. It is an object that
+might return a value in the future. It accomplishes the same basic goal as a callback
+function, but with many additional features and a more readable syntax.
+
+<h4>Creating a Promise</h4>
+You can initialize a promise with the <b>new Promise</b> syntax, and you must initialize it
+with a function. The function that gets passed to a promise has <b>resolve</b> and 
+<b>reject</b> parameters. The resolve and reject functions handle the success and failure of an
+operation, respectively.
+<pre>
+// Initialize a promise
+const promise = new Promise((resolve, reject) => {})
+</pre>
+So far, nothing has been set up for the promise, so it’s going to sit there in a pending
+state forever. The first thing you can do to test out a promise is fulfill the promise by
+resolving it with a value:
+
+<pre>
+const promise = new Promise((resolve, reject) => {
+  resolve('We did it!')
+})
+</pre>
+As stated in the beginning of this section, a promise is an object that may return a value.
+After being successfully fulfilled, the value goes from undefined to being populated
+with data.
+
+<p>
+  A promise can have three possible states: pending, fulfilled, and rejected.
+<ul>
+<li><b></b> Pending - Initial state before being resolved or rejected </li>
+<li><b></b> Fulfilled - Successful operation, promise has resolved </li>
+<li><b></b> Rejected - Failed operation, promise has rejected </li>
+</ul>
+
+<h4>Consuming a Promise</h4>
+The promise in the last section has fulfilled with a value, but you also want to be able to
+access the value. Promises have a method called <b>then</b> that will run after a promise
+reaches resolve in the code. <i>then</i> will return the promise’s value as a parameter.
+
+<pre>
+promise.then((response) => {
+  console.log(response)
+})
+</pre>
+</p>
+
+
+<pre>
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => resolve(
+    'Resolving an asynchronous request!'
+    ), 2000)
+})
+
+// Log the result
+promise.then((response) => {
+  console.log(response)
+})
+</pre>
+
+<pre>
+// Chain a promise
+promise
+  .then((firstResponse) => {
+    // Return a new value for the next then
+    return firstResponse + ' And chaining!'
+  })
+  .then((secondResponse) => {
+    console.log(secondResponse)
+  })
+</pre>
+
+<h4>Error Handling</h4>
+<pre>
+function getUsers(onSuccess) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Handle resolve and reject in the asynchronous API
+    }, 1000)
+  })
+}
+</pre>
+
+<pre>
+function getUsers(onSuccess) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Handle resolve and reject in the asynchronous API
+      if (onSuccess) {
+        resolve([
+          {id: 1, name: 'Jerry'},
+          {id: 2, name: 'Elaine'},
+          {id: 3, name: 'George'},
+        ])
+      } else {
+        reject('Failed to fetch data!')
+      }
+    }, 1000)
+  })
+}
+</pre>
+
+
+If you switch the flag and resolve instead, the catch will be ignored, 
+and the data will return instead:
+<pre>
+// Run the getUsers function with the false flag to trigger an error
+getUsers(false)
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+</pre>
+
+
+
+<h4>Async Functions with async/await</h4>
+
+An async function allows you to handle asynchronous code in a manner that appears
+synchronous. async functions still use promises under the hood, but have a more
+traditional JavaScript syntax. 
+<pre>
+// Create an async function
+async function getUser() {
+  return {}
+}
+
+console.log(getUser())
+</pre>
+<pre>
+getUser().then((response) => console.log(response))
+</pre>
+An <code>async</code> function can handle a promise called within it using the <b>await</b> operator.
+<code>await</code> can be used within an <code>async</code> function and will wait until a promise settles
+before executing the designated code.
+<pre>
+// Handle fetch with async/await
+async function getUser() {
+  const response = await fetch('https://api.github.com/users/octocat')
+  const data = await response.json()
+
+  console.log(data)
+}
+
+// Execute async function
+getUser()
+</pre>
+The <code>await</code> operators here ensure that the data is not logged before the request has
+populated it with data.
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

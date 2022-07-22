@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<!--script type="module" src="/main.js"></script-->
+<main>
+
+<random-paragraph-size-placeholder
+     text="My Text">
+</random-paragraph-size-placeholder>
+
+
+<script>
+class RandomParagraphSizePlaceholder extends HTMLElement {
+  constructor(){
+    console.log(`Message from Constructor`);
+    super();
+    const placeholder = document.createElement('template');
+    const myText = this.getAttribute('text') || 'random text'
+    const randomSize = Math.floor(Math.random()* 40)
+    placeholder.innerHTML = RandomParagraphSizePlaceholder.
+                               template(myText,randomSize)
+    this.appendChild(document.importNode(placeholder.content, true));
+  }
+
+  connectedCallback() {
+    console.log(`Element get Connected`)
+    
+  }
+
+  static get observedAttributes() {
+     return ['text']; 
+  }
+
+  static template (myText, randomSize){
+    return `
+    <div style="font-size:${randomSize}px">${myText}</div>
+    `
+  }
+
+}
+
+customElements.define(
+  'random-paragraph-size-placeholder',
+   RandomParagraphSizePlaceholder 
+);
+
+
+
+
+
+</script>
+
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

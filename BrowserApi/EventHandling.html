@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<!--script type="module" src="/main.js"></script-->
+<main>
+<h1>Introduction to Events</h1>
+An event is a signal that something has happened. All DOM nodes generate such
+signals (but events are not limited to DOM).
+
+<h5>Example</h5>
+<ul>
+<li><code>click</code> – when the mouse clicks on an element (touchscreen devices generate
+  it on a tap).</li>
+<li><code>submit</code> – when the visitor submits a &ltform&gt .</li>
+<li><code>keydown</code> and <code>keyup</code> – when the visitor presses and then releases the
+  button.</li>
+<li><code>DOMContentLoaded</code> – when the HTML is loaded and processed, DOM is
+  fully built.</li>
+<li><code>transitionend</code> – when a CSS-animation finishes</li>
+</ul>
+
+
+<h5>Event handlers</h5>
+To react on events we can assign a handler – a function that runs in case of an
+event.
+
+<h6>Three Way to handle event</h6>
+<div style="background-color: cornsilk;padding: 0.5cm;">
+
+<input value="Click me" onclick="alert('Click!')" type="button">
+
+<input type="button" onclick="countRabbits()" value="Count rabbits!">
+<input id="elem" type="button" value="Click me">
+</div>
+<script>
+function countRabbits() {
+  for(let i=1; i<=3; i++) {
+    alert("Rabbit number " + i);
+  }
+}
+
+elem.onclick = function() {
+  alert('Thank you');
+};
+</script>
+
+<h5>addEventListener</h5>
+<div style="background-color: cornsilk;padding: 0.5cm;">
+
+<button>Click Event</button>
+
+<script>
+let btn = document.querySelector('button');
+btn.addEventListener("click", event => {
+  
+}) 
+
+
+</script>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Dispatching Custom Events</h2>
+<h4>Event constructor</h4>
+Event form a hierarchy, just like DOM element classes. The root is the built-in
+<b>Events</b> class.
+<pre>
+let event = new Event(event type[, options]);
+</pre>
+
+Argument:
+<ul>
+<li>event type – may be any string, like "click" or our own like "hey-ho!" .</li>
+<li>options – the object with two optional properties:
+  <Li><code>bubbles</code>: true/false – if true , then the event bubbles.</Li>
+  <li><code>cancelable</code>: true/false – if true , then the “default action” may be
+    prevented. Later we’ll see what it means for custom events</li>
+  </li>
+</ul>
+
+<h4> dispatchEvent </h4>
+After an event object is created, we should “run” it on an element using the call
+<b>elem.dispatchEvent(event)</b> .
+<scrip>
+let event = new Event("click");
+elem.dispatchEvent(event);
+</scrip>
+
+<h4>Custom events</h4>
+For our own, custom events like "hello" we should use <b>new CustomEvent</b> .
+Technically CustomEvent is the same as Event , with one exception.
+In the second argument (object) we can add an additional property <b>detail</b> for
+any custom information that we want to pass with the event.
+
+<pre>
+// additional details come with the event to the handler
+elem.addEventListener("hello", function(event) {
+  alert(event.detail.name);
+});
+
+elem.dispatchEvent(new CustomEvent("hello", {
+  detail: { name: "John" }
+}));
+</pre>
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

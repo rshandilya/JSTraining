@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<!--script type="module" src="/main.js"></script-->
+<main>
+<h1>Class and Module</h1>
+<h2>The Secret Life of Objects</h2>
+<h3>Prototypes</h3>
+<pre>
+let empty = {};
+console.log(empty.toString);
+//  function toString()…{}
+console.log(empty.toString());
+// [object Object]
+</pre>
+
+In addition to their set of properties, most objects
+also have a <i>prototype</i>. A<b>prototype</b> is another object that is 
+used as a fallback source of properties. When an object gets a request for a 
+property that it does not have, its prototype will be searched for the property, then the prototype’s
+prototype, and so on.
+
+<p>
+So who is the prototype of that empty object? It is the great ancestral
+prototype, the entity behind almost all objects, <b>Object.prototype</b>.
+The <b>Object.getPrototypeOf</b> returns the prototype of an object.
+</p>
+
+<pre>
+console.log(Object.getPrototypeOf({}) == Object.prototype);
+// → true
+console.log(Object.getPrototypeOf(Object.prototype));
+// → null
+</pre>
+<p>The prototype relations of JavaScript objects form a tree-shaped structure,
+  and at the root of this structure sits Object.prototype. It provides a few
+  methods that show up in all objects, such as toString, which converts an
+  object to a string representation.</p>
+
+<p>Many objects don’t directly have Object.prototype as their prototype but
+  instead have another object that provides a different set of default 
+  properties. Functions derive from <b>Function.prototype</b>, and arrays 
+  derive from <b>Array.prototype</b>.</p>
+
+<pre>
+console.log(Object.getPrototypeOf(Math.max) == Function.prototype);
+// → true
+console.log(Object.getPrototypeOf([]) == Array.prototype);
+// → true
+</pre>
+
+<p>Such a prototype object will itself have a prototype, often 
+  Object.prototype, so that it still indirectly provides methods like toString.
+  You can use <b>Object.create</b> to create an object with a 
+  specific prototype.</p>
+
+<pre>
+let protoRabbit = {
+  speak(line) {
+    console.log(`The ${this.type} rabbit says '${line}'`);
+  }
+};
+
+let killerRabbit = Object.create(protoRabbit);
+killerRabbit.type = "killer";
+killerRabbit.speak("SKREEEE!");
+//The killer rabbit says 'SKREEEE!'
+</pre>
+<h3>Classes</h3>
+A class defines the shape of a type of object—what methods and properties 
+it has. Such an object is called an <i>instance</i>  of the class.
+
+<p>Prototypes are useful for defining properties for which all instances of a 
+  class   share the same value, such as methods. Properties that differ per
+   instance,   such as our rabbits’ type property, need to be stored directly in the objects
+  themselves.</p>
+
+<p>So to create an instance of a given class, you have to make an object that
+    derives from the proper prototype, but you also have to make sure it, itself, has
+    the properties that instances of this class are supposed to have. This is what a
+    constructor function does.</p>
+<pre>
+function makeRabbit(type) {
+  let rabbit = Object.create(protoRabbit);
+  rabbit.type = type;
+  return rabbit;
+}
+</pre>
+
+<p>
+  If you put the keyword new in front of a function call, the function is 
+  treated as   a constructor. This means that an object with the right
+   prototype is automatically created, bound to this in the function, and 
+   returned at the end of the function.
+</p>
+
+<p>The prototype object used when constructing objects is found by taking 
+  the  prototype property of the constructor function.</p>
+
+<pre>
+function Rabbit(type) {
+  this.type = type;
+}
+
+Rabbit.prototype.speak = function(line) {
+  console.log(`The ${this.type} rabbit says '${line}'`);
+};
+
+let weirdRabbit = new Rabbit("weird");
+</pre>
+<p>
+  Constructors (all functions, in fact) automatically get a property named
+<b>prototype</b>, which by default holds a plain, empty object that derives from
+<b>Object.prototype</b>. 
+By convention, the names of constructors are capitalized so that they can
+easily be distinguished from other functions
+</p>
+
+<h3>Class Notation</h3>
+So JavaScript classes are constructor functions with a prototype property. That
+is how they work, and until 2015, that was how you had to write them. These
+days, we have a less awkward notation.
+
+<pre>
+//syntax
+class MyClass {
+  // class methods
+  constructor() { ... }
+  method1() { ... }
+  method2() { ... }
+  method3() { ... }
+}
+</pre>
+
+
+
+Then new MyClass() creates a new object with all the listed methods.
+The constructor() method is called automatically by new , so we can initialize the object
+there
+
+
+
+<pre>
+class Rabbit {
+  constructor(type) {
+    this.type = type;
+  }
+
+  speak(line) {
+    console.log(`The ${this.type} rabbit says '${line}'`);
+  }
+}
+let killerRabbit = new Rabbit("killer");
+let blackRabbit = new Rabbit("black");
+</pre>
+
+<p>
+  The class keyword starts a class declaration, which allows us to define a
+  constructor and a set of methods all in a single place. Any number of methods
+  may be written inside the declaration’s braces. The one named <b>constructor</b> 
+  is treated specially. It provides the actual constructor function, which will be
+  bound to the name Rabbit. The others are packaged into that constructor’s prototype.
+</p>
+
+
+<pre>
+class Person {
+  constructor(firstname, lastname) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+  }
+  greet() {
+    console.log("Hi there! I'm", this.firstname);
+  }
+}
+
+let p = new Person("Maaike", "van Putten");
+
+p.greet();
+</pre>
+
+<h3>Class inheritance</h3>
+
+<pre>
+class Animal {
+  constructor(name) {
+    this.speed = 0;
+    this.name = name;
+  } 
+  run(speed) {
+    this.speed += speed;
+    alert(`${this.name} runs with speed ${this.speed}.`);
+  } 
+  stop() {
+    this.speed = 0;
+    alert(`${this.name} stopped.`);
+  }
+}
+
+let animal = new Animal("My animal");
+
+// Inherit from Animal by specifying "extends Animal"
+
+class Rabbit extends Animal {
+  hide() {
+    alert(`${this.name} hides!`);
+  }
+} 
+let rabbit = new Rabbit("White Rabbit");
+
+rabbit.run(5); // White Rabbit runs with speed 5.
+rabbit.hide(); // White Rabbit hides!
+</pre>
+
+<h4>Overriding a method</h4>
+Classes provide "<b>super</b>" keyword for that.
+<ul>
+<li><b>super.method(...)</b> to call a parent method.</li>
+<li><b>super(...)</b> to call a parent constructor (inside our constructor only).</li>
+</ul>
+<pre>
+class Rabbit extends Animal {
+    hide() {
+    alert(`${this.name} hides!`);
+  } 
+
+  stop() {
+    super.stop(); // call parent stop
+    this.hide(); // and then hide
+  }
+}
+
+let rabbit = new Rabbit("White Rabbit");
+
+rabbit.run(5); // White Rabbit runs with speed 5.
+rabbit.stop(); // White Rabbit stopped. White rabbit hides!
+</pre>
+
+<h4>Overriding constructor</h4>
+<pre>
+class Rabbit extends Animal {
+  // generated for extending classes without own constructors
+  constructor(...args) {
+    super(...args);
+  }
+}
+</pre>
+
+<h4>Getters and setters</h4>
+Getters and setters are special properties that we can use to get data from a class and
+to set data fields on the class. Getters and setters are computed properties.
+<pre>
+class CoffeeMachine {
+    _waterAmount = 0;
+
+  set waterAmount(value) {
+    if (value &lt 0) throw new Error("Negative water");
+    this._waterAmount = value;
+  } 
+  
+  get waterAmount() {
+    return this._waterAmount;
+  }
+
+  constructor(power) {
+    this._power = power;
+  }
+
+  get power() {
+    return this._power;
+  }
+}
+
+let coffeeMachine = new CoffeeMachine(100);
+// add water
+coffeeMachine.waterAmount = -10; // Error: Negative water
+
+alert(`Power is: ${coffeeMachine.power}W`); // Power is: 100W
+coffeeMachine.power = 25; // Error (no setter)
+</pre>
+
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

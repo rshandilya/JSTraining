@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<!--script type="module" src="/main.js"></script-->
+<main>
+<h1>Functions</h1>
+In JavaScript, functions are considered to be first-class objects. This means
+they behave in the same way as all the other primitive data types and objects
+in the language. They can be be assigned to variables, stored in arrays and
+can even be returned by another functions.
+
+<h5>Function Declarations</h5>
+<pre>
+function sayHello() {
+  let you = prompt("What's your name? ");
+  console.log("Hello", you + "!");
+}
+</pre>
+
+<h5>Function Expressions</h5>
+<pre>
+//assigns an anonymous function to a variable
+
+let varContainingFunction = function() {
+  let varInFunction = "I'm in a function.";
+  console.log("hi there!", varInFunction);
+  };
+
+
+//create a named function expression
+
+const goodbye = function bye(){
+  console.log('Goodbye World!');
+};
+</pre>
+
+<h5>Invoking Function</h5>
+<pre>
+sayHello();
+varContainingFunction();
+goodbye();
+</pre>
+
+<h5>Parameters and arguments</h5>
+<pre>
+function tester(para1, para2){
+  return para1 + " " + para2;
+}
+
+const arg1 = "argument 1";
+const arg2 = "argument 2";
+tester(arg1, arg2);
+</pre>
+
+<h5>Default or unsuitable parameters</h5>
+<pre>
+function addTwoNumbers(x, y) {
+  console.log(x + y);
+};
+
+addTwoNumbers();
+
+function addTwoNumbers(x = 2, y = 3) {
+  console.log(x + y);
+};
+addTwoNumbers();
+addTwoNumbers(6, 6);
+addTwoNumbers(10);
+addTwoNumbers(1,2,3,4);
+</pre>
+
+<h4>Special functions and operators</h4>
+<h5>Arrow functions</h5>
+
+<pre>
+//syntax
+
+(param1, param2) => body of the function;
+
+() => body of the function;
+
+param => body of the function;
+
+(param1, param2) => {
+  // line 1;
+  // any number of lines;
+};
+</pre>
+<br>
+<pre>
+let doingArrowStuff = x => console.log(x);
+doingArrowStuff("Great!");
+
+let addTwoNumbers = (x, y) => console.log(x + y);
+addTwoNumbers(5, 3);
+
+let sayHi = () => console.log("hi");
+sayHi();
+
+const arr = ["squirrel", "alpaca", "buddy"];
+arr.forEach(e => console.log(e));
+</pre>
+
+<h5>Spread operator</h5>
+The spread operator is a special operator. It consists of three dots used before a
+referenced expression or string, and it spreads out the arguments or elements of an
+array
+<pre>
+  let spread = ["so", "much", "fun"];
+  let message = ["JavaScript", "is", ...spread, "and", "very",
+                "powerful"];
+  console.log(message)
+</pre>
+
+This operator avoids having to copy a long array or string into a function, which
+saves time and reduces code complexity. You can call a function with multiple
+spread operators.
+<pre>
+function addFourNumbers(x, y, z, a) {
+  console.log(x + y + z + a);
+}
+
+let arr = [5, 9];
+let arr2 = [6, 7];
+addFourNumbers(...arr, ...arr2);
+</pre>
+
+<h5>Rest parameter</h5>
+It has the same symbol as the spread operator, but it is used inside 
+the function parameter list.
+<pre>
+function someFunction(param1, param2) {
+  console.log(param1, param2);
+  }
+someFunction("hi", "there!", "How are you?");
+</pre>
+<pre>
+function someFunction(param1, ...param2) {
+  console.log(param1, param2);
+}
+
+someFunction("hi", "there!", "How are you?");
+</pre>
+
+<h4>Returning function values</h4>
+<pre>
+function addTwoNumbers(x, y) {
+  return x + y;
+}
+
+let resultsArr = [];
+for(let i = 0; i &lt 10; i ++){
+  let result = addTwoNumbers(i, 2*i);
+  resultsArr.push(result);
+}
+console.log(resultsArr);
+</pre>
+<pre>
+let addTwoNumbers = (x, y) => {
+  console.log("Adding...");
+  return x + y;
+}
+
+let result = addTwoNumbers(12, 15);
+console.log(result);
+</pre>
+
+<h3>Variable scope in functions</h3>
+Scope defines where you can access a certain variable. When a
+variable is in scope, you can access it. When a variable is out of scope, you cannot
+access the variable.
+<h5>Local variables in functions</h5>
+Local variables are only in scope within the function they are defined. This is true
+for let variables and var variables.
+<pre>
+function testAvailability(x) {
+  console.log("Available here:", x);
+}
+
+testAvailability("Hi!");
+console.log("Not available here:", x);
+</pre>
+
+<pre>
+function testAvailability() {
+  let y = "Local variable!";
+  console.log("Available here:", y);
+}
+
+testAvailability();
+console.log("Not available here:", y);
+</pre>
+
+Variables defined inside the function are not available outside the function either.
+<pre>
+function testAvailability() {
+  let y = "I'll return";
+  console.log("Available here:", y);
+  return y;
+}
+
+let z = testAvailability();
+console.log("Outside the function:", z);
+console.log("Not available here:", y);
+</pre>
+
+<h5>let versus var variables</h5>
+  The difference between let and var is that var is function-scoped, which is the
+  concept we described above. let is actually not function-scoped but block-scoped. A
+  block is defined by two curly braces { }.
+
+  <pre>
+function doingStuff() {
+  if (true) {
+    var x = "local";
+  }
+
+  console.log(x);
+}
+
+doingStuff();
+</pre>
+
+<pre>
+function doingStuff() {
+  if (true) {
+    let x = "local";
+  }
+  console.log(x);
+}
+doingStuff();
+</pre>
+A final difference between let and var relates to the order of declaration in a script.
+<pre>
+function doingStuff() {
+  if (true) {
+    console.log(x);
+    let x = "local";
+  }
+}
+doingStuff(); //Reference Error
+
+function doingStuff() {
+  if (true) {
+    console.log(x);
+    var x = "local";
+  }
+}
+doingStuff();  //undefined
+</pre>
+
+<h5>const scope</h5>
+Constants are block-scoped, just like let. This is why the scope rules here are similar
+to those for let. 
+<pre>
+function doingStuff() {
+  if (true) {
+    const X = "local";
+  }
+  console.log(X);
+}
+</pre>
+
+<h5>Global variables</h5>
+As you might have guessed, global variables are variables declared outside a
+function and not in some other code block. 
+A variable defined at
+the top level of your program is therefore available everywhere in your program.
+<pre>
+let globalVar = "Accessible everywhere!";
+
+console.log("Outside function:", globalVar);
+
+function creatingNewScope(x) {
+  console.log("Access to global vars inside function." , globalVar);
+}
+
+creatingNewScope("some parameter");
+console.log("Still available:", globalVar);
+</pre>
+
+<pre>
+let x = "global";
+function doingStuff() {
+  let x = "local";
+  console.log(x);
+}
+
+doingStuff();
+console.log(x);
+</pre>
+Check This
+<pre>
+  function confuseReader() {
+    x = "Guess my scope...";
+    console.log("Inside the function:", x);
+  }
+
+  confuseReader();
+  console.log("Outside of function:", x);
+</pre>
+
+<h3>Immediately invoked function expression</h3>
+The immediately invoked function expression (IIFE) is a way of expressing a
+function so that it gets invoked immediately. It is anonymous, it doesn't have a
+name, and it is self-executing.
+<pre>
+  (function () {
+    console.log("IIFE!");
+    })();
+</pre>
+You could also combine IIFE with other function patterns. For example, you could
+use an arrow function here to make the function even more concise:
+<pre>
+(()=>{
+  console.log("run right away");
+  })();
+</pre>
+
+<h4>Recursive functions</h4>
+write a function pow(x, n) that raises x to a
+natural power of n . In other words, multiplies x by itself n times.
+<pre>
+//Iterative thinking: the for loop:
+function pow(x, n) {
+  let result = 1;
+  // multiply result by x n times in the loop
+  for (let i = 0; i &lt n; i++) {
+    result *= x;
+  } 
+  return result;
+} 
+console.log( pow(2, 3) ); // 8
+</pre>
+The maximal number of nested calls (including the first one) is called recursion depth. In our
+case, it will be exactly n .
+<pre>
+//  Recursive thinking
+function pow(x, n) {
+  if (n == 1) {
+    return x;
+  } else {
+    return x * pow(x, n - 1);
+  }
+} 
+console.log( pow(2, 3) ); // 8
+</pre>
+A recursive solution is usually shorter than an iterative one.
+<pre>
+function pow(x, n) {
+  return (n == 1) ? x : (x * pow(x, n - 1));
+}
+</pre>
+
+<h4>Nested functions</h4>
+<pre>
+function doOuterFunctionStuff(nr) {
+
+  console.log("Outer function");
+
+  doInnerFunctionStuff(nr);
+
+  function doInnerFunctionStuff(x) {
+    console.log(x + 7);
+    console.log("I can access outer variables:", nr);
+  }
+}
+doOuterFunctionStuff(2);
+</pre>
+As you can see, the outer function is calling its nested function. This nested function
+has access to the variables of the parent. The other way around, this is not the case.
+Variables defined inside the inner function have function scope. 
+<pre>
+function doOuterFunctionStuff(nr) {
+
+  doInnerFunctionStuff(nr);
+
+  function doInnerFunctionStuff(x) {
+    let z = 10;
+  }
+
+  console.log("Not accessible:", z);
+}
+
+doOuterFunctionStuff(2);  //ReferenceError
+
+doInnerFunctionStuff(3);  /ReferenceError
+</pre>
+
+<h2>Closure</h2>
+A closure is a reference to a variable that was created inside the scope of
+another function, but is then kept alive and used in another part of the
+program.
+<pre>
+function outer() {
+  const outside = 'Outside!';
+  function inner() {
+    const inside = 'Inside!';
+    console.log(outside);
+    console.log(inside);
+  }
+  console.log(outside);
+  inner();
+}
+</pre>
+The outer() function only has access to the variable outside, which was
+declared in its scope. The inner() function, however, has access to the
+variable inside, declared in its scope, but also the variable outside, declared
+outside its scope, but from within the outer() function.
+
+<h4>Returning Functions</h4>
+A <b>closure</b> is formed when the inner function is returned by the outer
+function, maintaining access to any variables declared inside the enclosing
+function.
+<pre>
+function outer() {
+  const outside = 'Outside!';
+  function inner() {
+    const inside = 'Inside!';
+    console.log(outside);
+    console.log(inside);
+  }
+  return inner;
+}
+</pre>
+This is important as the variable outside should only exist while the outer()
+function is running. The closure maintains access to this variable, however,
+even though the outer() has been invoked.
+<pre>
+function multiplier(factor) {
+  return number => number * factor;
+}
+
+let twice = multiplier(2);
+
+console.log(twice(5));
+</pre>
+A closure doesn't just have access to the value of a variable, it can also
+change the value of the variable long after the function in which it was
+originally declared has been invoked.
+<pre>
+function closure() {
+  const a = 1.8;
+  const b = 32;
+  return c => c * a + b;
+}
+
+const toFahrenheit = closure();
+
+toFahrenheit(30);
+</pre>
+
+<pre>
+function counter(start){
+  let i = start;
+  return function() {
+    return i++;
+  } 
+}
+
+const count = counter(1);
+count();
+count();
+</pre>
+
+
+<h3>Methods</h3>
+Methods are nothing more than properties that hold function values.
+<pre>
+let rabbit = {};
+rabbit.speak = function(line) {
+  console.log(`The rabbit says '${line}'`);
+};
+rabbit.speak("I'm alive.");
+</pre>
+
+When a function is called as a method—looked up as a property and immediately
+called, as in <b>object.method()</b> the binding called <b>this</b> in its 
+body automatically points at the obj.
+<pre>
+function speak(line) {
+  console.log(`The ${this.type} rabbit says '${line}'`);
+}
+
+let whiteRabbit = {type: "white", speak};
+let hungryRabbit = {type: "hungry", speak};
+
+whiteRabbit.speak("Oh my ears and whiskers, " +
+"how late it's getting!");
+
+hungryRabbit.speak("I could use a carrot right now.");
+
+</pre>
+You can think of <b>this</b> as an extra parameter that is passed in a different
+way. If you want to pass it explicitly, you can use a function’s <b>call</b> method,
+which takes the this value as its first argument and treats further arguments
+as normal parameters.
+<pre>
+speak.call(hungryRabbit, "Burp!");
+</pre>
+
+<p>Since each function has its own this binding, whose value depends on the
+  way it is called, you cannot refer to the this of the wrapping scope in a regular
+  function defined with the function keyword.</p>
+
+<p>Arrow functions are different—they do not bind their own this but can see
+  the this binding of the scope around them.</p>
+
+<pre>
+function normalize() {
+  console.log(this.coords.map(n => n / this.length));
+}
+
+normalize.call({coords: [0, 2, 3], length: 5});
+</pre>
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<!--script type="module" src="/main.js"></script-->
+<main>
+<h2>Browser environment</h2>
+<img src="./img/browser.png" width="300">
+<pre>
+function sayHi() {
+  alert("Hello");
+} 
+// global functions are accessible as properties of window
+window.sayHi();
+
+alert(window.innerHeight); // inner window height
+</pre>
+
+<h3>BOM (Browser object model)</h3>
+Browser Object Model (BOM) are objects provided by the browser (host
+environment) to work with everything except the document.
+<ul>
+<li>The <b>navigator</b> object provides background information about the browser
+  and the operating system. 
+  <b>navigator.userAgent</b>– about the current browser,
+  <b>navigator.platform</b> - about the platform </li>
+<li>The <b>location</b> object allows us to read the current URL and can redirect the
+  browser to a new one</li>
+<li>The <b>history</b> object help you to get previous page</li>
+</ul>
+<pre>
+alert(location.href); // shows current URL
+
+if (confirm("Go to wikipedia?")) {
+  location.href = "https://wikipedia.org"; 
+  // redirect the browser to another URL
+}
+
+window.history.go(-1);
+
+console.dir(window.navigator);
+</pre>
+
+
+<h2>DOM (Document Object Model)</h2>
+The document object gives access to the page content.The DOM specification 
+explains the structure of a document and provides
+objects to manipulate it. We can change or
+create anything on the page using it.
+<pre>
+// change the background color to red
+document.body.style.background = "red";
+// change it back after 1 second
+setTimeout(() => document.body.style.background = "", 1000);
+</pre>
+
+The DOM represents HTML as a tree structure of tags.
+<p>
+Tags are called <b>element nodes</b> (or just elements). 
+Nested tags become children of the enclosing ones. As a result we have a tree of elements: 
+<i>html</i> is at the root, then <i>head</i> and <i>body</i> are its children, etc.
+
+<p>The text inside elements forms <b>text nodes</b>, labelled as #text . A text node
+  contains only a string. It may not have children and is always a leaf of the tree.</p>
+</p>
+
+<h3>Walking the DOM</h3>
+<img src="./img/dom.png" width="300">
+
+<p>
+  The topmost tree nodes are available directly as document properties:
+  <ul>
+    <li>&lthtml&gt = document.documentElement</li>
+    <li>&ltbody&gt = document.body</li>
+    <li>&lthead&gt = document.head</li>
+  </ul>
+</p>
+
+<h4>Children: childNodes, firstChild, lastChild</h4>
+The <b>childNodes</b> collection provides access to all child nodes, including
+text nodes.
+
+<p>childNodes - is a collection, a special array-like iterable object. 
+  Array methods won’t work, because it’s not an array. DOM collections, 
+  all navigation properties are read-only.</p>
+<pre>
+for (let i = 0; i &lt document.body.childNodes.length; i++) {
+  alert( document.body.childNodes[i] );
+   // Text, DIV, Text, UL, ..., SCRIPT
+}
+</pre>
+<p>Properties <b>firstChild</b> and <b>lastChild</b> give fast access to the first and
+  last children.</p>
+<pre>
+  elem.childNodes[0] === elem.firstChild
+  elem.childNodes[elem.childNodes.length - 1] === elem.lastChild
+</pre>
+There’s also a special function <b>elem.hasChildNodes()</b> to check whether
+there are any child nodes.
+
+<h4>Siblings and the parent</h4>
+Siblings are nodes that are children of the same parent. 
+The next node in the same parent (next sibling) is <b>nextSibling</b> , and the
+previous one is <b>previousSibling</b>.
+<pre>
+alert( document.body.parentNode === document.documentElement ); // true
+
+alert( document.head.nextSibling ); // HTMLBodyElement
+
+alert( document.body.previousSibling ); // HTMLHeadElement
+</pre>
+
+<h4>Element-only navigation</h4>
+Navigation properties listed above refer to all nodes. 
+But for many tasks we don’t want text or comment nodes
+
+<p> The navigation links that only take element nodes into account:
+<ul>
+<li><code><b>children</b></code> : only those children that are element nodes.</li>
+<li><code><b>firstElementChild</b></code> , <code><b>lastElementChild</b></code> – first and last element
+  children.</li>
+<li><code><b>previousElementSibling</b></code> , 
+  <code><b>nextElementSibling</b></code> – neighbour
+  elements.</li>
+<li><code><b>parentElement</b></code> – parent element.</li>
+</ul>
+</p>
+
+<h4>Table</h4>
+Some types of DOM elements, e.g. tables, provide additional properties and
+collections to access their content.
+
+<h3>Searching: getElement*, querySelector*</h3>
+
+<h4>getElementsBy*</h4>
+<ul>
+  <li><b>document.getElementById(id)</b>: If an element has the id attribute, 
+    then there’s a global variable by the name from that id .
+    <pre>
+alert(elem); // DOM-element with id="elem"
+alert(window.elem); // accessing global variable like this also works
+alert(window['elem-content']); 
+
+let elem = document.getElementById('elem');
+elem.style.background = 'red';
+    </pre>
+  </li>
+  <li><b>elem.getElementsByTagName(tag)</b> looks for elements with the given tag
+    and returns the collection of them. The tag parameter can also be a star "*"
+    for “any tags”.</li>
+  <li><b>elem.getElementsByClassName(className)</b> returns elements that
+    have the given CSS class.</li>
+  <li><b>document.getElementsByName(name)</b> returns elements with the given
+    name attribute, document-wide. very rarely used.</li>
+</ul>
+
+<h4>querySelectorAll</h4>
+By far, the most versatile method, <b>elem.querySelectorAll(css)</b> returns all
+elements inside elem matching the given CSS selector.
+<pre>
+let elements = document.querySelectorAll('ul > li:last-child');
+for (let elem of elements) {
+  alert(elem.innerHTML);  // "test", "passed"
+}
+</pre>
+
+<h4>querySelector</h4>
+The call to <b>elem.querySelector(css)</b> returns the first element for the given
+CSS selector.
+
+<h4>closest</h4>
+The method <b>elem.closest(css)</b> looks the nearest ancestor that matches the
+CSS-selector. The elem itself is also included in the search.
+
+
+<h3>Node properties: type, tag and contents</h3>
+<h4>DOM node classes</h4>
+DOM nodes have different properties depending on their class.
+Each DOM node belongs to the folowing built-in class.
+
+<p>The root of the hierarchy is <b>EventTarget</b>, that is inherited by <b>Node</b>, and
+  other DOM nodes inherit from it.</p>
+<img src="./img/node_class.png" width="300">
+
+<h4>Tag: nodeName and tagName</h4>
+Given a DOM node, we can read its tag name from <b>nodeName</b> or <b>tagName</b>
+properties:
+<pre>
+  alert( document.body.nodeName ); // BODY
+  alert( document.body.tagName ); // BODY
+</pre>
+
+<h4>innerHTML: the contents</h4>
+The <b>innerHTML</b> property allows to get the HTML inside the element as a string.
+We can also modify it. So it’s one of most powerful ways to change the page.
+
+<pre>
+  alert( document.body.innerHTML ); // read the current contents
+  document.body.innerHTML = 'The new BODY!'; // replace it
+</pre>
+<h4>nodeValue/data: text node content</h4>
+The innerHTML property is only valid for element nodes.
+Other node types have their counterpart: <b>nodeValue</b> and <b>data</b> properties.
+<pre>
+let text = document.body.firstChild;
+alert(text.data); // Hello
+let comment = text.nextSibling;
+alert(comment.data); // Comment
+</pre>
+
+<h4>textContent: pure text</h4>
+The textContent provides access to the text inside the element: only text,
+minus all &lttags&gt .
+
+<h3>Modifying the document</h3>
+<h4>Creating an element</h4>
+
+<b>document.createElement(tag)</b> Creates a new element node with the given tag:
+<pre>
+let div = document.createElement('div');
+</pre>
+
+<b>document.createTextNode(text)</b> Creates a new text node with the given text:
+<pre>
+let textNode = document.createTextNode('Here I am');
+</pre>
+
+<h4>Insertion methods</h4>
+<b>parentElem.appendChild(node)</b> Appends node as the last child of parentElem . <br>
+<pre>
+let newLi = document.createElement('li');
+newLi.innerHTML = 'Hello, world!';
+list.appendChild(newLi);
+</pre>
+<b>parentElem.insertBefore(node, nextSibling)</b> Inserts node before nextSibling into parentElem .
+<pre>
+  let newLi = document.createElement('li');
+  newLi.innerHTML = 'Hello, world!';
+  list.insertBefore(newLi, list.children[1]);
+</pre>
+<b>parentElem.replaceChild(node, oldChild)</b>
+Replaces oldChild with node among children of parentElem .
+
+
+
+
+
+</main>
+
+
+<script type="text/javascript">
+
+</script>
+
+
+<style>
+body {
+  background-color: lightgray;
+}
+main {
+  background-color: white;
+  margin-left: 2pt;
+  margin-right: 2pt;
+  margin-bottom: 2cm;
+  padding: 20pt;
+}
+
+pre {
+  background-color: lightgoldenrodyellow;
+  padding: 10pt; 
+}
+</style>
+
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+<body>
+<script type="module" src="/main.js"></script>
+<main>
+<h1>JavaScript Data Types</h1>
+
+<h3>Alert and Prompt</h3>
+<p>We can use <b>alert</b> and <b>prompt</b> as input and output message from webpage</p>
+
+<p><b>Task 1 :</b> Take upper and Lower Bound from prompt and output random number 
+  between them.</p>
+
+<h3>Variable</h3>
+<p>A variable is a “named storage” for data.</p>
+<p>To create a variable in JavaScript, use the  <i>let</i> keyword</p>
+
+<pre>
+let question = 'Hello are you?';
+
+let response; //declared not intialized
+
+response = prompt(question);
+alert(response);
+</pre>
+
+<pre>
+let $ = 1; // declared a variable with the name "$"
+let _ = 2; // and now a variable with the name "_"
+alert($ + _); // 3
+let 1a; // cannot start with a digit
+let my-name; // hyphens '-' aren't allowed in the name
+</pre>
+<h3>Constant</h3>
+To declare a constant (unchanging) variable, use <b>const</b>  instead of <i>let</i>:
+
+<h3>Reserved Words</h3>
+<b>abstract, await, boolean, break, byte, case, catch, char, class, const, ...</b>
+<h3>Data Types</h3>
+JavaScript is a <i>dynamically typed</i> language. 
+JavaScript is a <i>loosely typed </i> language.
+
+<p>JavaScript has a special operator called <b>typeof</b> for finding out the type of a
+  value.</p>
+
+<h4>Primitive Data Types</h4>
+
+JavaScript has <i>seven primitives</i> types: <br>
+<b> String, Number, BigInt, Boolean, Symbol, undefined,</b> and <b>null</b>. <br>
+All primitive types have literal representations of their values.Literals represent values that aren’t stored in a
+variable, such as a hardcoded name or price. 
+
+
+
+<h5>1.String</h5>
+A string is used to store a text value. It is a sequence of characters. There are different
+ways to declare a string:
+<ul>
+  <li>Double quotes</li>
+  <li>Single quotes</li>
+  <li>Backticks: special template strings in which you can use variables directly</li>
+</ul>
+<pre>
+let name = "John";
+// embed a variable
+alert( `Hello, ${name}!` ); 
+// embed an expression
+alert( `the result is ${1 + 2}` );
+</pre>
+
+<h5>2.Number</h5>
+A 64-bit floating-point number. This means that it can store rather large numbers and both signed and unsigned numbers, numbers with
+decimals, and more.
+<pre>
+let intNr = 1;
+let decNr = 1.5;
+let expNr = 1.4e15;
+let octNr = 0o10; //decimal version would be 8
+let hexNr = 0x3E8; //decimal version would be 1000
+let binNr = 0b101; //decimal version would be 5
+</pre>
+
+<p>Besides regular numbers, there are so-called “special numeric values” which 
+  also belong to this data type: <b> Infinity , -Infinity</b> and <b>NaN</b>.
+  NaN represents a computational error.</p>
+
+<h5>3.BigInt</h5>
+for very large integers, a BigInt data type can be recognized by the postfix n.
+<pre>let bigNr = 90071992547409920n;</pre>
+
+<h5> 4. Boolean </h5>
+The boolean type has only two values: <b>true</b> and <b>false</b> .
+
+<h5>5. Symbol</h5>
+Symbol can be used when it is important that variables are not equal, 
+even though their value and type are the same
+(in this case, they would both be of the symbol type).
+<pre>
+  let str1 = "JavaScript is fun!";
+  let str2 = "JavaScript is fun!";
+  console.log("These two strings are the same:", str1 === str2);
+  let sym1 = Symbol("JavaScript is fun!");
+  let sym2 = Symbol("JavaScript is fun!");
+  console.log("These two Symbols are the same:", sym1 === sym2);
+</pre>
+
+<h5>6. Undefined</h5>
+It has a special data type for a variable that has not been assigned a value.
+
+<h5>7. null</h5>
+It’s just a special value which represents “nothing”, “empty” or “value unknown”.
+
+<h5>Identifying Primitive Types</h5>
+<pre>
+console.log(typeof "Nicholas"); // "string"
+console.log(typeof 10); // "number"
+console.log(typeof 5.1); // "number"
+console.log(typeof true); // "boolean"
+console.log(typeof undefined); // "undefined"
+</pre>
+
+<b>Task 2:</b> Check the following:
+<pre>
+  console.log(typeof null);
+
+  console.log("5" == 5); 
+  console.log("5" === 5);
+
+  console.log(undefined == null);
+  console.log(undefined === null);
+</pre>
+
+<h4>Primitive Methods</h4>
+<pre>
+  var name = "Nicholas";
+  var lowercaseName = name.toLowerCase(); // convert to lowercase
+  var firstLetter = name.charAt(0); // get first character
+  var middleOfName = name.substring(2, 5); // get characters 2-4
+  var count = 10;
+  var fixedCount = count.toFixed(2); // convert to "10.00"
+  var hexCount = count.toString(16); // convert to "a"
+  var flag = true;
+  var stringFlag = flag.toString(); // convert to "true"
+</pre>
+
+<p>Any value that isn’t one of the primitive data types listed above is an <b>object</b> 
+(the root of every other JavaScript type).</p>
+
+<h3>Reference Types</h3>
+Reference types represent objects in JavaScript and are the closest things
+to classes that you will find in the language. 
+
+Reference values are <i>instances</i> of reference types and are synonymous with <b>objetcs</b>.
+
+<p>
+An object is an unordered list of <i>properties</i> consisting of a name (always a string) and a value. When
+the value of a property is a function, it is called a <i>method</i>. 
+</p>
+
+<p>
+  Reference types do not store the object directly into the variable to
+which it is assigned, so the object variable in this example doesn’t actually
+contain the object instance. Instead, it holds a pointer (or reference) to
+the location in memory where the object exists.
+</p>
+
+<h5>Creating Objects</h5>
+The first is to use the new operator with a constructor. (A constructor is simply a function that uses new
+to create an object—any function can be a constructor.)
+<pre>
+  var object = new Object();
+</pre>
+When you assign an object to a variable, you’re actually assigning a
+pointer. 
+<pre>
+var object1 = new Object();
+var object2 = object1;
+</pre>
+
+<h5>Dereferencing Objects</h5>
+JavaScript is a garbage-collected language, so you don’t really need to worry 
+about memory allocations when you use reference types. However,it’s best to dereference
+ objects that you no longer need so that the garbage collector can free up that memory.
+<pre>
+var object1 = new Object();
+// do something
+object1 = null; // dereference
+</pre>
+
+<h5>Adding or Removing Properties</h5>
+<pre>
+  var object1 = new Object();
+  var object2 = object1;
+  object1.myCustomProperty = "Awesome!";
+  console.log(object2.myCustomProperty); // "Awesome!"
+</pre>
+
+<h3>Built-in Types</h3>
+The <b>Object</b> type is just one of a handful of built-in reference
+types that JavaScript provides. The other built-in types are more 
+specialized in their intended usage and can be instantiated at any time.
+<ul>
+  <li><b>Array:</b> An ordered list of numerically indexed values</li>
+  <li><b>Date:</b> A date and time</li>
+  <li><b>Error:</b> A runtime error (there are also several more specific
+    error subtypes)</li>
+  <li><b>Function:</b> A function</li>
+  <li><b>Object:</b> A generic object</li>
+  <li><b>RegExp:</b> A regular expression</li>
+</ul>
+
+<pre>
+    var items = new Array();
+    var now = new Date();
+    var error = new Error("Something bad happened.");
+    var func = new Function("console.log('Hi');");
+    var object = new Object();
+    var re = new RegExp("\\d+");
+</pre>
+
+<h4>Literal Forms</h4>
+A <i>literal</i> is syntax that allows you to define a reference value without explicitly 
+creating an object, using the new operator and the object’s constructor.
+
+<h5>Object Literals</h5>
+<pre>
+var book = {
+  name: "The Principles of Object-Oriented JavaScript",
+  year: 2014
+  };
+
+var book = {
+  "name": "The Principles of Object-Oriented JavaScript",
+  "prev year": 2021
+  };    
+</pre>
+eqivalent to
+<pre>
+  var book = new Object();
+  book.name = "The Principles of Object-Oriented JavaScript";
+  book.year = 2014;
+</pre>
+
+<h5>Array Literals</h5>
+<pre>
+  var colors = [ "red", "blue", "green" ];
+  console.log(colors[0]); // "red"  
+</pre>
+equivalent to
+<pre>
+  var colors = new Array("red", "blue", "green")
+  console.log(colors[0]); // "red"  
+</pre>
+
+<h5>Function Literals</h5>
+<pre>
+  function reflect(value) {
+    return value;
+  }
+
+  // is the same as
+
+  var reflect = new Function("value", "return value;");
+</pre>
+
+<h5>Regular Expression Literals</h5>
+<pre>
+  var numbers = /\d+/g;
+
+  // is the same as
+
+  var numbers = new RegExp("\\d+", "g");
+</pre>
+
+<h4>Property Access</h4>
+Properties are name/value pairs that are stored on an object. 
+<i>Dot notation</i> is the most common way to access properties in JavaScript (as in
+many object-oriented languages), but you can also access properties on
+JavaScript objects by using <i>bracket notation</i> with a string.
+
+<pre>
+  var array = [];
+  array.push(12345);
+
+  var array = [];
+  array["push"](12345);  
+
+  //  dynamically decide which property to access.
+
+  var array = [];
+  var method = "push";
+  array[method](12345);
+</pre>
+
+<h4>Identifying Reference Types</h4>
+<pre>
+  function reflect(value) {
+    return value;
+  }
+    console.log(typeof reflect); // "function"
+</pre>
+<p>The <i>instanceof</i> operator takes an object and a constructor as parameters. 
+  When the value is an instance of the type that the constructor specifies, instanceof returns true;
+</p>
+<pre>
+  var items = [];
+  var object = {};
+  function reflect(value) {
+  return value;
+  }
+
+  console.log(items instanceof Array); // true
+  console.log(object instanceof Object); // true
+  console.log(reflect instanceof Function); // true
+
+</pre>
+<p>
+The instanceof operator can identify inherited types. That means
+every object is actually an instance of Object because every reference type
+inherits from Object.
+</p>
+<pre>
+  var items = [];
+  var object = {};
+
+  function reflect(value) {
+    return value;
+  }
+
+  console.log(items instanceof Array); // true
+  console.log(items instanceof Object); // true
+  console.log(object instanceof Object); // true
+  console.log(object instanceof Array); // false
+  console.log(reflect instanceof Function); // true
+  console.log(reflect instanceof Object); // true
+</pre>
+<h5>identifying arrays</h5>
+<pre>
+  var items = [];
+  console.log(Array.isArray(items)); // true
+</pre>
+
+<h3>Primitive wrapper Types</h3>
+There are three primitive wrapper types (String, Number, and Boolean). 
+These special reference types exist to make working
+with primitive values as easy as working with objects.
+
+<p>
+  The primitive wrapper types are reference types that are automatically created behind the scenes whenever strings, numbers, or Booleans
+  are read. 
+</p>
+<pre>
+var name = "Nicholas";
+var firstChar = name.charAt(0);
+console.log(firstChar); // "N"
+
+
+// what the JavaScript engine does
+var name = "Nicholas";
+var temp = new String(name);
+var firstChar = temp.charAt(0);
+temp = null;
+console.log(firstChar); // "N"
+</pre>
+Check Output
+<pre>
+  var name = "Nicholas";
+  name.last = "Zakas";
+  console.log(name.last); 
+</pre>
+<p>
+  With primitive wrapper
+  types, properties seem to disappear because the object on which the
+  property was assigned is destroyed immediately afterward.
+</p>
+<pre>
+  // what the JavaScript engine does
+  var name = "Nicholas";
+  var temp = new String(name);
+  temp.last = "Zakas";
+  temp = null; // temporary object destroyed
+  var temp = new String(name);
+  console.log(temp.last); // undefined
+  temp = null;
+</pre>
+
+<p>
+  Although reference
+  values are created automatically for primitive values, when instanceof
+  checks for these types of values the result is false:
+</p>
+<pre>
+  var name = "Nicholas";
+  var count = 10;
+  var found = false;
+  console.log(name instanceof String); // false
+  console.log(count instanceof Number); // false
+  console.log(found instanceof Boolean); // false
+</pre>
+</main>
+
+
+<script type="text/javascript">
+//ALERT AND PROMPT
+/* 
+alert("Hi there!");
+console.log("Hi there!");
+let msg = prompt("Hi! How are you?");  
+alert(msg);
+//console.log(Math.floor(Math.random() * 100));
+*/
+
+//VARIABLE
+/*
+let question = 'Hello are you?';
+
+let response; //declared not intialized
+
+response = prompt(question);
+alert(response);
+*/
+
+// VALID VARIABLES
+/*
+let $ = 1; // declared a variable with the name "$"
+let _ = 2; // and now a variable with the name "_"
+alert($ + _); // 3
+let 1a; // cannot start with a digit
+let my-name; // hyphens '-' aren't allowed in the name
+*/
+
+//CONSTANT
+const COLOR_ORANGE = "#FF7F00";
+
+//STRING
+/*
+let name = "John";
+// embed a variable
+alert( `Hello, ${name}!` ); 
+// embed an expression
+alert( `the result is ${1 + 2}` ); 
+*/
+
+//NUMBERS
+/*
+
+
+let bigNr = 90071992547409920n; //BigInt type
+*/
+
+//SYMBOL
+/*
+let str1 = "JavaScript is fun!";
+let str2 = "JavaScript is fun!";
+console.log("These two strings are the same:", str1 === str2);
+let sym1 = Symbol("JavaScript is fun!");
+let sym2 = Symbol("JavaScript is fun!");
+console.log("These two Symbols are the same:", sym1 === sym2);
+*/
+</script>
+
+
+<style>
+main {
+  margin-left: 2cm;
+  margin-right: 2cm;
+  margin-bottom: 2cm;
+}
+</style>
+
+</body>
+</html>
